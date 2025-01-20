@@ -92,9 +92,13 @@ resume_tailor/
 ├── main.py          # Main application logic
 ├── .env            # Environment variables (not in repo)
 ├── .env.example    # Example environment variables
+├── credentials.json # Google OAuth credentials (not in repo)
+├── token.pickle    # Google OAuth tokens (not in repo)
 ├── requirements.txt # Project dependencies
 └── README.md       # Project documentation
 ```
+
+Note: Files marked with "(not in repo)" are required for the application but should not be committed to version control.
 
 ### Future Improvements
 

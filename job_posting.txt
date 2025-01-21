@@ -1,48 +1,91 @@
-Product Manager, Consumer Analytics
-5600 Avenida Encinas, Carlsbad, CA 92008, USA
-Full-time
-Sub Department: Data & Analytics
-Workplace Type: Onsite
-Department: HQ - Technology
-Company Description
-Vuori is re-defining what athletic apparel looks like: built to move and sweat in but designed with a casual aesthetic to transition into everyday life. We draw inspiration from an active coastal California lifestyle; an integration of fitness, creative expression and life. Our high energy fast paced retail environment is reflected in the clothes we make. We aim to inspire others to take on all aspects of their lives with clarity, enthusiasm and purpose…while having a lot of fun along the way. We are proud to be an outlet for opportunity and for personal growth and success.
+Senior/Staff Product Manager, Database
+Product
+At Timescale, we empower businesses with real-time insights from their data, allowing them to make faster decisions and optimize operations. We are creating a movement to unblock developers who are building the future. Timescale is a product-led growth organization driven by transparent leaders and a globally diverse, remote-first team that is proudly building a modern PostgreSQL cloud platform.
 
-Job Description
-We’re looking for a strategic and talented Product Manager to help define and drive the roadmap for consumer data and analytics initiatives within our Data & Analytics department. In this role, you will lead the development and execution of the Consumer Analytics strategy, ensuring that data platforms, insights, and solutions empower personalization, customer understanding, and impactful decision-making across the business. Acting as a bridge between business leaders and technical teams, you will take ownership of prioritizing and delivering analytics products that align with company objectives and inspire innovation in how we use data to drive value.  
+Timescale is looking for an experienced and entrepreneurial Sr/Staff Product Manager with a track record of successfully leading databases or other highly technical products end-to-end. You will be the product lead for TimescaleDB, our open-source database for real-time analytics and time series at scale built on the favorite database for developers: PostgreSQL.
 
-Qualifications
-What you’ll get to do:
+This is an exciting opportunity to help build the next great database for the 25 million developers worldwide.
 
-Help establish and own the vision, strategy, and multi-year roadmap for Consumer Analytics, ensuring alignment with business goals and the company’s broader data and analytics objectives.
-Develop and manage the Consumer Analytics roadmap by prioritizing key initiatives, assessing trade-offs, and ensuring alignment with cross-functional stakeholders in marketing, operations, and product teams.
-Oversee the end-to-end lifecycle of analytics products, from ideation through delivery, ensuring features and solutions meet business objectives and drive measurable outcomes.
-Partner closely with data engineers, analysts, and business stakeholders to define requirements, align on technical solutions, and drive successful implementation of consumer data projects.
-Act as a thought leader by identifying opportunities for leveraging analytics to solve business challenges, improve customer engagement, and enhance decision-making processes across the organization.
-Deliver compelling updates to senior leadership and stakeholders, communicating the value of Consumer Analytics initiatives and aligning teams around the roadmap and priorities.
-Monitor industry trends and emerging technologies to continuously evolve Vuori’s consumer analytics strategy, ensuring it remains innovative and forward-thinking.
-Who you are: 
+Product Managers at Timescale have a lot of responsibility and own the success of their products. You’ll deeply understand our customers, identify their jobs to be done, build product strategies to pursue those opportunities, collaborate with engineering and design to develop solutions to the identified problems, define positioning, and drive adoption, working closely with our go-to-market teams. You’ll work strategically and tactically to lead your product end-to-end, obsess about the customer experience, grow product adoption, and drive business outcomes.
 
-Bachelor’s degree in a technical field (e.g., Computer Science, Information Systems) or equivalent experience.
-7+ years of experience as a Product Manager with expertise in data, analytics, and consumer insights.
-Proven ability to define strategy and roadmap for analytics products, driving alignment and delivering impactful outcomes.
-Strong analytical and problem-solving skills, with the ability to translate business needs into actionable data solutions.
-Proficiency in Agile methodologies, project management principles, and tools for analytics product development.
-Expertise in consumer data architecture, including data modeling, integration, and identity resolution for personalization and segmentation.
-Deep understanding of consumer retail processes, including customer journeys, loyalty programs, and omni-channel strategies.
-Exceptional communication and leadership skills, with a track record of collaborating across technical and business teams to deliver results.
-Additional Information
-Our investment in you:
+You'll succeed at Timescale if you are entrepreneurial, bold, scrappy, decisive, fired up in front of challenges and uncertainty, and get things done.
 
-At Vuori, we’re proud to offer the following to our employees: 
+Timescale is a mostly remote company with team members around the world, and English language fluency is a requirement. The preferred candidate for this role will be based in Europe or the United States (Eastern Timezone).
 
-Health Insurance 
-Savings and Retirement Plan  
-Employee Assistance Program 
-Generous Vuori Discount & Industry Perks 
-Paid Time Off  
-Wellness & Fitness benefits  
-The salary range for this role is $140,000 per year - $165,000 per year.  
+Responsibilities:
 
-Vuori is proud to be an Equal Opportunity/Affirmative Action employer. All qualified applicants will receive consideration for employment without regard to sex, gender identity, sexual orientation, race, color, religion, national origin, disability, protected Veteran status, age, or any other characteristic protected by law.  
+Develop a deep understanding of our customers and their problems, the competitive landscape, and market trends.
 
-All your information will be kept confidential according to EEO guidelines. 
+Identify what problems to focus on and the sequence of steps to solve them. Provide engineering and design with all the customer, market, and business context they need to define and build the right solutions.
+
+Articulate the value new products and features deliver before we start building them and iterate on that with input from customers as we make progress towards the release.
+
+Collaborate with product marketing, marketing and sales to define positioning and messaging, communicate the value of the product and drive adoption.
+
+Define and measure success in the form of input and output metrics and connect those to the business outcomes the company wants to drive.
+
+Measure adoption of the product, run experiments, collect customer feedback regularly, and adjust plans as needed. Use data to support your decisions.
+
+Help support customer engagements and participate in sales enablement activities within the company as needed.
+
+Serve as the connective tissue between engineering, design, marketing, customer care, and other stakeholders, proactively communicating product questions and decisions.
+
+Requirements:
+
+5+ years of proven track record in product management, with at least 3+ years of recent experience on complex technical products/platforms for a technical audience, ideally developers.
+
+Experience with databases or other technical products with high-scale, high-performance needs. Deep knowledge of modern distributed systems and the data infrastructure ecosystem.
+
+Experience working closely with marketing and sales to define positioning and take products to market.
+
+Excellent written and verbal communication and the ability to explain complex technical design in 20 seconds or 20 minutes, depending on the audience and goals.
+
+Ability to combine data-driven approaches with strong user empathy to figure out what/when/why to ship - we’re building a platform for millions of developers, and there is lots to do! 
+
+Excited by ambiguous and vague problem definitions and the ability to refine them into an actionable plan.
+
+Strong sense of ownership, urgency, and problem-solving skills - Timescale is moving fast, and so should you. Trying things, making mistakes, and quickly improving are in our DNA.
+
+Comfortable engaging and working in the open with developer communities.
+
+Computer Science or technical degree preferred, or prior technical development experience.
+
+Our Commitment:
+
+We will respond to all applicants
+
+We strive to review all applications fairly, without bias, and shortlist based on relevant skills and experience.
+
+All active candidates will be informed of what is happening next in the process.
+
+About Timescale🐯
+
+Timescale is the creator of TimescaleDB and PGVectorscale, trusted by tens of thousands of organizations for their mission-critical time-series applications. We're committed to empowering developers and businesses worldwide, helping them build data-driven products that measure everything that matters—from software applications and industrial equipment to financial markets, blockchain activity, consumer behavior, machine learning models, and climate change.
+
+By analyzing data across time (“time-series data”), developers gain insights into what’s happening, how it’s changing, and why. With a global, fully remote workforce, Timescale is supported by top investors, including Tiger Global, Benchmark Capital, NEA, Redpoint Ventures, Icon Ventures, and Two Sigma Ventures.
+
+Enjoy debating the crunch-factor of different chicken nuggets 🍗, sweating it out during lunch 💦, talking about your kids, whether they be actual children 👶🏽, potted plants 🌱, or four-legged creatures 🐾? You’ll fit right in at Timescale!
+
+Our Tech stack: 
+
+We share our tech stack with the caveat that we don’t require previous experience in it (but a love of these languages is helpful): Timescale's tech stack includes TimescaleDB, built on PostgreSQL, along with AWS, Go, Docker, Kubernetes, and Python for scalable time-series data management.
+
+To learn more, visit www.timescale.com or follow us on Twitter @TimescaleDB.
+
+What we’re offering
+
+Benefits may differ from country to country.
+
+Flexible PTO and family leave
+
+Fridays off in August 😎
+
+Full remote work from almost anywhere
+
+Stock options
+
+Monthly WiFi stipend
+
+Professional development and educational benefits 📚
+
+Premium insurance options for you and your family (US employees)

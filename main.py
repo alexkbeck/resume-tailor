@@ -77,24 +77,58 @@ def get_google_auth():
     
     Returns:
         Credentials: The authenticated Google credentials.
+        
+    Raises:
+        Exception: If authentication fails.
     """
-    creds = None
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-
+    def remove_token_and_retry():
+        """Remove token.pickle and create new credentials."""
+        if os.path.exists('token.pickle'):
+            logging.info("Removing expired token...")
+            os.remove('token.pickle')
+        
+        logging.info("Getting new token...")
+        flow = InstalledAppFlow.from_client_secrets_file(
+            'credentials.json', SCOPES)
+        new_creds = flow.run_local_server(port=0)
+        
+        # Save the new credentials
         with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+            pickle.dump(new_creds, token)
+        
+        return new_creds
 
-    return creds
+    try:
+        creds = None
+        
+        # Try to load existing credentials
+        if os.path.exists('token.pickle'):
+            try:
+                with open('token.pickle', 'rb') as token:
+                    creds = pickle.load(token)
+            except Exception as e:
+                logging.warning(f"Error reading token.pickle: {str(e)}")
+                return remove_token_and_retry()
+        
+        # If no valid credentials available, let user log in
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                try:
+                    logging.info("Refreshing expired token...")
+                    creds.refresh(Request())
+                    # Save the refreshed credentials
+                    with open('token.pickle', 'wb') as token:
+                        pickle.dump(creds, token)
+                except Exception as e:
+                    logging.warning(f"Error refreshing token: {str(e)}")
+                    return remove_token_and_retry()
+            else:
+                return remove_token_and_retry()
+
+        return creds
+
+    except Exception as e:
+        raise Exception(f"Failed to authenticate with Google: {str(e)}")
 
 
 def read_doc(service: Resource, doc_id: str) -> Tuple[str, List[Dict[str, Any]]]:
@@ -128,12 +162,13 @@ def read_doc(service: Resource, doc_id: str) -> Tuple[str, List[Dict[str, Any]]]
                     if 'textRun' in para_element:
                         text_run = para_element['textRun']
                         content = text_run['content']
-                        if text_run.get('textStyle'):
-                            styles.append({
-                                'start_index': current_index,
-                                'end_index': current_index + len(content),
-                                'style': text_run['textStyle']
-                            })
+                        # Always capture the style, even if it's empty
+                        style_info = {
+                            'start_index': current_index,
+                            'end_index': current_index + len(content),
+                            'style': text_run.get('textStyle', {})
+                        }
+                        styles.append(style_info)
                         text += content
                         current_index += len(content)
         
@@ -166,77 +201,128 @@ def get_base_resume():
 
 
 def get_job_posting():
-    """Prompt user for job posting text from a file.
+    """Get job posting text from file.
+    
+    First tries to read from 'job_posting.txt' in the current directory.
+    If not found, prompts user for file path.
     
     Returns:
         str: The job posting text.
         
     Raises:
-        Exception: If there's an error reading the file.
+        FileReadError: If there's an error reading the file.
     """
-    print("\nPlease save the job posting in a text file and provide the path.")
-    print("Example: ./job_posting.txt\n")
+    def read_file_with_encodings(file_path):
+        """Helper function to read file with different encodings."""
+        for encoding in SUPPORTED_ENCODINGS:
+            try:
+                with open(file_path, 'r', encoding=encoding) as file:
+                    content = file.read().strip()
+                    if not content:
+                        raise FileReadError("File is empty")
+                    return content
+            except UnicodeDecodeError:
+                continue
+        raise FileReadError(f"Unable to read file with supported encodings: {file_path}")
+
+    # First try job_posting.txt in current directory
+    default_file = 'job_posting.txt'
+    if os.path.exists(default_file):
+        try:
+            logging.info(f"Found {default_file}, attempting to read...")
+            return read_file_with_encodings(default_file)
+        except Exception as e:
+            logging.warning(f"Error reading {default_file}: {str(e)}")
+            # Fall through to manual input
+    
+    # If default file not found or failed to read, prompt user
+    print("\nPlease provide the path to the job posting text file.")
+    print("Example: ./job_posting.txt")
+    print("(Press Ctrl+C to exit)\n")
     
     while True:
         try:
             file_path = input("Enter file path: ").strip()
             if file_path.lower() in ['exit', 'quit', 'q']:
                 raise KeyboardInterrupt
-                
-            # Try different encodings
-            encodings = ['utf-8', 'utf-16', 'ascii', 'iso-8859-1', 'cp1252']
             
-            for encoding in encodings:
-                try:
-                    with open(file_path, 'r', encoding=encoding) as file:
-                        content = file.read().strip()
-                        if not content:
-                            print("Error: File is empty. Please provide a file with content.")
-                            break
-                        return content
-                except UnicodeDecodeError:
-                    continue  # Try next encoding
-                except FileNotFoundError:
-                    print(f"Error: File '{file_path}' not found. Please try again or type 'exit' to quit.")
-                    break
-                except Exception as e:
-                    print(f"Error reading file: {e}")
-                    print("Please try again or type 'exit' to quit.")
-                    break
-            else:  # No encoding worked
-                print("Error: Unable to read file with supported encodings.")
-                print("Please ensure the file is saved with UTF-8 encoding or type 'exit' to quit.")
+            try:
+                return read_file_with_encodings(file_path)
+            except FileReadError as e:
+                print(f"Error: {str(e)}")
+                print("Please try again or type 'exit' to quit.")
+            except FileNotFoundError:
+                print(f"Error: File '{file_path}' not found.")
+                print("Please try again or type 'exit' to quit.")
 
         except KeyboardInterrupt:
             print("\nExiting application...")
             raise SystemExit(0)
 
 
-def tailor_resume(client, resume_text, job_text):
+def tailor_resume(client, resume_text, job_text, temperature):
     """Generate a tailored version of the resume for the job posting.
     
     Args:
         client: The OpenAI client instance.
         resume_text (str): The original resume content.
         job_text (str): The job posting content.
+        temperature (float): Tailoring intensity between 0.0 and 1.0
         
     Returns:
         str: The tailored resume content.
     """
+    # Create dynamic instructions based on temperature
+    base_instructions = [
+        {
+            "action": "Keep original content and phrasing",
+            "weight": 1.0 - temperature
+        },
+        {
+            "action": "Adjust content to match job requirements",
+            "weight": temperature
+        },
+        {
+            "action": "Use industry-specific terminology",
+            "weight": temperature
+        },
+        {
+            "action": "Add relevant details to existing points",
+            "weight": temperature
+        },
+        {
+            "action": "Restructure content order for relevance",
+            "weight": temperature * 0.8  # Less weight on structural changes
+        }
+    ]
+    
+    # Generate dynamic instructions string
+    instructions = "\n".join([
+        f"{i+1}. {item['action']} (Priority: {'High' if item['weight'] > 0.7 else 'Medium' if item['weight'] > 0.3 else 'Low'})"
+        for i, item in enumerate(base_instructions)
+    ])
+    
+    # Additional guidelines based on temperature
+    preservation_note = f"Preserve approximately {int((1 - temperature) * 100)}% of the original content"
+    matching_note = f"Match approximately {int(temperature * 100)}% of key terms and skills from the job posting"
+    
     try:
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {
                     "role": "system", 
-                    "content": """You are an expert at subtly tailoring resumes to job descriptions.
-                    Your task is to:
-                    1. Identify key skills and requirements from the job posting
-                    2. Modify the resume to emphasize relevant experience and skills
-                    3. Use your own phrasing - do not copy text directly from the job posting
-                    4. Keep modifications subtle and natural-sounding
-                    5. Maintain the exact same formatting as the original resume
-                    6. Preserve the overall length and structure
+                    "content": f"""You are an expert at tailoring resumes to job descriptions.
+                    
+                    Tailoring Guidelines:
+                    {instructions}
+                    
+                    Additional Instructions:
+                    - {preservation_note}
+                    - {matching_note}
+                    - Maintain truthfulness - never fabricate experience
+                    - Maintain the exact same formatting as the original resume
+                    - Keep overall length similar to original
                     
                     Only output the modified resume content, no explanations or other text."""
                 },
@@ -369,6 +455,32 @@ def create_tailored_resume(service, title, content, styles):
         raise Exception(f"Failed to create tailored resume document: {str(e)}")
 
 
+def get_tailoring_temperature():
+    """Get the desired level of resume tailoring.
+    
+    Returns:
+        float: Tailoring temperature between 0.0 and 1.0
+    """
+    print("\nEnter tailoring level (0.0 to 1.0):")
+    print("0.0: Minimal changes (preserve most of original)")
+    print("0.5: Balanced changes")
+    print("1.0: Extensive changes (closely match job posting)")
+    print("Or any value in between")
+    
+    while True:
+        try:
+            temp = float(input("\nEnter value (0.0-1.0): ").strip())
+            if 0.0 <= temp <= 1.0:
+                return temp
+            else:
+                print("Please enter a value between 0.0 and 1.0")
+        except ValueError:
+            print("Please enter a valid number")
+        except KeyboardInterrupt:
+            print("\nExiting application...")
+            raise SystemExit(0)
+
+
 def main():
     """Main execution function."""
     try:
@@ -378,9 +490,22 @@ def main():
         # Get base resume document ID
         doc_id = get_base_resume()
 
-        # Initialize Google Docs service
-        creds = get_google_auth()
-        docs_service = build('docs', 'v1', credentials=creds)
+        # Initialize Google Docs service with retry on token error
+        max_retries = 2
+        for attempt in range(max_retries):
+            try:
+                creds = get_google_auth()
+                docs_service = build('docs', 'v1', credentials=creds)
+                # Test the credentials with a simple API call
+                docs_service.documents().get(documentId=doc_id).execute()
+                break  # If we get here, the credentials work
+            except Exception as e:
+                if 'invalid_grant' in str(e) and attempt < max_retries - 1:
+                    logging.warning("Token validation failed, retrying authentication...")
+                    if os.path.exists('token.pickle'):
+                        os.remove('token.pickle')
+                    continue
+                raise  # Re-raise the exception if we're out of retries or it's a different error
 
         # Read content from Google Doc
         logging.info("Reading resume content...")
@@ -397,9 +522,12 @@ def main():
         # Get base resume title
         base_title = get_base_doc_title(docs_service, doc_id)
         
+        # Get tailoring temperature
+        temperature = get_tailoring_temperature()
+        
         # Generate tailored resume
         print("\nTailoring resume for the position...")
-        tailored_content = tailor_resume(client, resume_content, job_content) 
+        tailored_content = tailor_resume(client, resume_content, job_content, temperature)
         
         # Create new document
         new_title = f"{base_title} - {company_name} - {job_title}"

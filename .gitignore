@@ -29,3 +29,11 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Job posting files
+job_posting.txt
+job_postings/
+*.txt
+
+# Test files
+test_expired_token.py

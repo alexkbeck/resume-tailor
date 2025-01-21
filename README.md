@@ -53,7 +53,8 @@ A tool that uses AI to tailor your resume for specific job postings while mainta
    - Click 'Share' and copy the link
 
 2. Prepare job posting:
-   - Save the job posting text to a file (e.g., `job_posting.txt`)
+   - Save the job posting text to a file named `job_posting.txt` in the project directory
+   - Or save it with any name/location and provide the path when prompted
    - Ensure the file is saved with UTF-8 encoding
 
 3. Run the application:
@@ -63,8 +64,14 @@ A tool that uses AI to tailor your resume for specific job postings while mainta
 
 4. Follow the prompts:
    - Paste your Google Doc link when prompted
-   - Provide the path to your job posting file
+   - If `job_posting.txt` is not found, you'll be asked to provide the path to your job posting file
+   - Select the tailoring level:
+     - Subtle: Makes minimal changes to preserve most of your original resume
+     - Balanced: Makes moderate adjustments to better match the job posting
+     - Extensive: Makes comprehensive changes to closely align with the job requirements
    - The tailored resume will be saved as a new Google Doc
+
+Note: The application will automatically use `job_posting.txt` if it exists in the same directory as `main.py`. Otherwise, it will prompt you to provide the file location.
 
 ## Contributing
 
